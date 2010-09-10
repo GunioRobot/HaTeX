@@ -18,7 +18,7 @@ my $header =
 \date{\today}
 \author{Authro Name\\
 学籍番号とか\\
-\texttt{s1011425@coins.tsukuba.ac.jp}}
+\texttt{hogehoge@hogehoge.tsukuba.ac.jp}}
 \maketitle
 ';
 

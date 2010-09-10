@@ -216,7 +216,7 @@ sub super_pre {
 	my $items = shift->{items};
 	my $filter = $1 || ''; # todo
 	my $texts = $class->expand($items->[1]);
-	return "<pre>\n$texts</pre>\n";
+	return '\begin{verbatiam}' . "\n$texts" . '\end{verbatiam}' . "\n";
 }
 
 sub pre {
