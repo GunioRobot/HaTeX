@@ -1,4 +1,6 @@
 TODO
 
 Text::Vimcolorなどを使って、super_pre記法を使いたい
+Text::HaTeXは、空行を見つけると処理をやめてしまう
+参考文献一覧の機能
 
