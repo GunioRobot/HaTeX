@@ -34,24 +34,16 @@ my $hooter = '\end{document}';
 #print $q->param('refference');
 
 my $tex =  Text::Hatex->parse($body);
-print $tex;
-
-
 open FILE, ">tmp/fuga.tex";
 print FILE $header . $tex . "\n" . $hooter . "\n";
 close FILE;
 
+my $name = 'fuga';
+
 chdir 'tmp';
-{
-	my @gomi = qq(fuga.tex fuga.log fuga.aux fuga.dvi fuga.pdf);
-	foreach (@gomi) {
-		unlink if -e;
-	}
-}
-print `nkf -e fuga.tex>fugaeuc.tex`;
-print `platex --kanji=euc fugaeuc.tex`;
-print `mv fugaeuc.dvi fuga.dvi`;
-print `dvipdfm fuga.dvi`;
+`make clean TARGET=$name`;
+`nkf -e $name.tex>${name}euc.tex; rm $name.tex; mv ${name}euc.tex $name.tex`;
+`make TARGET=$name`;
 chdir '..';
 
 print $q->end_html;
