@@ -7,17 +7,16 @@
 	<body>
 		<h3>HaTex</h3>
 		<p>はてな記法からTeXへ変換します。参考文献の機能は未実装です。</p>
-		<form action="cgi-bin/aaa.cgi" method="post">
+		<form  method="post" action="post.pl">
 			Title:<br>
-			<input type="text" name="title" size="80"><br>
+			<input type="text" name="title" size="80" value="" /><br>
 			Author:<br>
-			<textarea name="author" rows="4" cols="80"></textarea><br>
+			<input name="author" rows="4" cols="80"><br>
 			Body:<br>
 			<textarea name="body" rows="40" cols="80"></textarea><br>
 			Ref:<br>
 			<textarea name="refference" rows="4" cols="80"></textarea><br>
-			<input type="submit" value="Submit">
-			<input type="reset" value="Reset">
+			<input type="submit" value="Submit" />
 		</form>
 	</body>
 </html>

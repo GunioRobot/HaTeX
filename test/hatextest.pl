@@ -32,4 +32,3 @@ foreach (<>) {
 }
 print $header . Text::Hatex->parse( $buf) . $hooter;
 
-
