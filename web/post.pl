@@ -22,6 +22,21 @@ my $header =
 \setlength{\topmargin}{-5mm}
 \setlength{\textheight}{254mm}
 \pagestyle{empty}
+
+\usepackage{here}
+\usepackage{txfonts}
+\usepackage{listings, jlisting}
+\renewcommand{\lstlistingname}{リスト}
+\lstset{language=c,
+	basicstyle=\ttfamily\scriptsize,
+	commentstyle=\textit,
+	classoffset=1,
+	keywordstyle=\bfseries,
+	frame=single,
+	showstringspaces=false,
+	numberstyle=\tiny,
+}
+
 \begin{document}
 \title{' . $title . '}
 \date{\today}
@@ -33,15 +48,16 @@ my $hooter = '\end{document}';
 #未実装
 #print $q->param('refference');
 
-my $tex =  Text::Hatex->parse($body);
-open FILE, ">tmp/fuga.tex";
-print FILE $header . $tex . "\n" . $hooter . "\n";
-close FILE;
-
 my $name = 'fuga';
 
 chdir 'tmp';
 `make clean TARGET=$name`;
+
+my $tex =  Text::Hatex->parse($body);
+open FILE, ">fuga.tex";
+print FILE $header . $tex . "\n" . $hooter . "\n";
+close FILE;
+
 `nkf -e $name.tex>${name}euc.tex; rm $name.tex; mv ${name}euc.tex $name.tex`;
 `make TARGET=$name`;
 chdir '..';

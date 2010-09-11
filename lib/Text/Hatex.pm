@@ -216,7 +216,13 @@ sub super_pre {
 	my $items = shift->{items};
 	my $filter = $1 || ''; # todo
 	my $texts = $class->expand($items->[1]);
-	return '\begin{verbatiam}' . "\n$texts" . '\end{verbatiam}' . "\n";
+	my $lang = 'c';
+	{
+		$items->[0] =~ /\>\|(.*)\|/;
+		$lang = $1;
+		$lang = 'C++' if($lang eq 'cpp');
+	}
+	return "\\begin{lstlisting}[language=$lang]" . "\n$texts" . '\end{lstlisting}' . "\n";
 }
 
 sub pre {

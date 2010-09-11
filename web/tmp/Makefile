@@ -16,5 +16,5 @@ ${TARGET}.dvi: ${TARGET}.tex
 .PHONY: clean
 
 clean:
-	yes|rm ${TARGET}.log ${TARGET}.dvi ${TARGET}.aux
+	yes|rm ${TARGET}.log ${TARGET}.dvi ${TARGET}.aux ${TARGET}.tex ${TARGET}.pdf
 
