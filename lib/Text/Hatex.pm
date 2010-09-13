@@ -146,7 +146,20 @@ sub blockquote {
 	my $items = shift->{items};
 	my $body = $class->expand($items->[3]);
 	my $http = $items->[1]->[0];
-	return "\\begin{quotation}\n" . $body . "\\end{quotation}\n";
+	my $ret = '';
+	if ($http) {
+		$ret = "\\begin{quotation}\n";
+		#$ret = qq|<blockquote title="$http->{title}" cite="$http->{cite}">\n|;
+	} else {
+		#$ret = "<blockquote>\n";
+		$ret = "\\begin{quotation}\n";
+	}
+	$ret .= $body;
+	if ($http) {
+		#$ret .= qq|<cite><a href="$http->{cite}">$http->{title}</a></cite>\n|;
+	}
+	$ret .= "\\end{quotation}\n";
+	return $ret;
 }
 
 sub bq_block {
@@ -259,7 +272,7 @@ sub p {
 	my $class = shift;
 	my $items = shift->{items};
 	my $inlines = $class->expand($items->[2]);
-	return $inlines ? "$inlines\n" : "\n";
+	return $inlines ? "$inlines\n" : "";
 }
 
 sub text_line {
@@ -273,7 +286,6 @@ sub inline {
 	my $class = shift;
 	my $items = shift->{items};
 	my $item = $items->[0] or return;
-
 	return $item;
 }
 
