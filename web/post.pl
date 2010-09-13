@@ -4,6 +4,7 @@ use warnings;
 use strict;
 use CGI;
 use Text::Hatex;
+
 my $q = new CGI;
 
 print $q->header( -charset => "utf-8");
@@ -41,26 +42,36 @@ my $header =
 \title{' . $title . '}
 \date{\today}
 \author{' . $author . '}
-\maketitle
-';
-my $hooter = '\end{document}';
+\maketitle' . "\n";
+my $hooter = '\end{document}' . "\n";
 
-#未実装
-#print $q->param('refference');
+# reffered documents
+my $refference;
+$refference = '\begin{thebibliography}{99}' . "\n";
+foreach ($q->param('refference')) {
+	$refference .= "\\bibitem $_";
+}
+$refference .= '\end{thebibliography}' . "\n";
 
-my $name = 'fuga';
+my $name = int(rand(10000000)) . int(rand(10000000)) . int(rand(10000000));
 
 chdir 'tmp';
 `make clean TARGET=$name`;
 
-my $tex =  Text::Hatex->parse($body);
-open FILE, ">fuga.tex";
-print FILE $header . $tex . "\n" . $hooter . "\n";
+my $tex =  Text::Hatex->parse($body) . "\n";
+open FILE, ">$name.tex";
+print FILE $header . $tex . $refference . $hooter;
 close FILE;
 
 `nkf -e $name.tex>${name}euc.tex; rm $name.tex; mv ${name}euc.tex $name.tex`;
-`make TARGET=$name`;
+print '<pre>' . `make TARGET=$name` . '</pre>';
 chdir '..';
+
+print "<p>
+<a href=\"tmp/$name.tex\">$name.tex</a><br>
+<a href=\"tmp/$name.pdf\">$name.pdf</a><br>
+</p>
+";
 
 print $q->end_html;
 
