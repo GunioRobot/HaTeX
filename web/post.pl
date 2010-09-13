@@ -45,13 +45,15 @@ my $header =
 \maketitle' . "\n";
 my $hooter = '\end{document}' . "\n";
 
-# reffered documents
-my $refference;
-$refference = '\begin{thebibliography}{99}' . "\n";
-foreach ($q->param('refference')) {
-	$refference .= "\\bibitem $_";
+# thebibliography environment
+my $refference = '';
+if($q->param('refference') ne '') {
+	$refference = '\begin{thebibliography}{99}' . "\n";
+	foreach ($q->param('refference')) {
+		$refference .= "\\bibitem $_";
+	}
+	$refference .= '\end{thebibliography}' . "\n";
 }
-$refference .= '\end{thebibliography}' . "\n";
 
 my $name = int(rand(10000000)) . int(rand(10000000)) . int(rand(10000000));
 
