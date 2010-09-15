@@ -14,9 +14,8 @@ SYNOPSIS
 
 ABSTRACT
     Text::Hatex is derived from Text::Hatena.
-    Text::Hatena can translate Hatena syntax into HTML but not TeX.
-    Text::Hatex can translate Hatena syntax into TeX syntax.
-    For more information about Hatena syntax, please see following links.
+    (It can translate Hatena syntax into HTML but not TeX.)
+    For more information about Hatena syntax, please refer to following links.
     http://search.cpan.org/dist/Text-Hatena/
     http://d.hatena.ne.jp/ (Japanese)
 
