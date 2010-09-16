@@ -27,7 +27,6 @@ $syntax = q(
 	# Block Elements
 	block      : h5
 		| h4
-		| footnote
 		| blockquote
 		| dl
 		| list
@@ -244,14 +243,23 @@ sub table {
 	my $class = shift;
 	my $items = shift->{items};
 	my $trs = $class->expand($items->[0]);
-	return "<table>\n$trs</table>\n";
+	my $column_count;
+	{
+		# カラムの数を数える。カラムの設定(右寄せ、左寄せなど)を行うための準備
+		$trs =~ /.*\n/;
+		my $tmp = $&;
+		$column_count = 1 + ($tmp =~ s/\&/\&/g);
+	}
+	my $column_settings = ('|l' x $column_count) . '|';
+	return "\\begin{center}\n\\begin{tabular}{$column_settings} \\hline\n$trs\\end{tabular}\n\\end{center}\n";
 }
 
 sub table_row { # we can't use tr!
 	my $class = shift;
 	my $items = shift->{items};
 	my $tds = $class->expand($items->[1]);
-	return "<tr>\n$tds</tr>\n";
+	$tds =~ s/\&\s*$//;	# 最後のcolumnの後には & をつけてはいけない
+	return $tds ."\\\\ \\hline \n";
 }
 
 sub td {
@@ -259,7 +267,8 @@ sub td {
 	my $items = shift->{items};
 	my $tag = $items->[0] ? 'th' : 'td';
 	my $inlines = $class->expand($items->[1]);
-	return "<$tag>$inlines</$tag>\n";
+	$inlines = "\\textgt{$inlines}" if($tag eq 'th');
+	return $inlines . " & ";
 }
 
 sub cdata {
@@ -280,13 +289,6 @@ sub text_line {
 	my $class = shift;
 	my $text = shift->{items}->[2];
 	return "$text\n";
-}
-
-sub footnote {
-	my $class = shift;
-	my $text = shift->[2];
-	warn $text;
-	return 'うぎゃあああああああああああ';
 }
 
 # Inline Nodes
