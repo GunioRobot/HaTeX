@@ -55,11 +55,12 @@ if($q->param('refference') ne '') {
 	$refference .= '\end{thebibliography}' . "\n";
 }
 
-my $name = int(rand(10000000)) . int(rand(10000000)) . int(rand(10000000));
+my $name = int(rand(1000000000000000));
 
 chdir 'tmp';
 `make clean TARGET=$name`;
 
+$body =~ s/\\/{\\textbackslash}/g;
 my $tex =  Text::Hatex->parse($body) . "\n";
 open FILE, ">$name.tex";
 print FILE $header . $tex . $refference . $hooter;
@@ -67,6 +68,7 @@ close FILE;
 
 `nkf -e $name.tex>${name}euc.tex; rm $name.tex; mv ${name}euc.tex $name.tex`;
 print '<pre>' . `make TARGET=$name` . '</pre>';
+#system "make TARGET=$name&";
 chdir '..';
 
 print "<p>
