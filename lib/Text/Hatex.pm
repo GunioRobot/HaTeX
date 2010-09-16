@@ -173,7 +173,7 @@ sub dl {
 	my $class = shift;
 	my $items = shift->{items};
 	my $list = $class->expand($items->[0]);
-	return "<dl>\n$list</dl>\n";
+	return '\begin{description}' . "\n$list" . '\end{description}' . "\n";
 }
 
 sub dl_item {
@@ -181,7 +181,7 @@ sub dl_item {
 	my $items = shift->{items};
 	my $dt = $class->expand($items->[1]);
 	my $dd = $class->expand($items->[3]);
-	return "<dt>$dt</dt>\n<dd>$dd</dd>\n";
+	return "\\item[$dt] \\mbox{}\\\\$dd\n";
 }
 
 sub dt {
@@ -311,3 +311,4 @@ sub http {
 }
 
 1;
+
