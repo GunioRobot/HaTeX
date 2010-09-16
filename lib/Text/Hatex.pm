@@ -27,6 +27,7 @@ $syntax = q(
 	# Block Elements
 	block      : h5
 		| h4
+		| footnote
 		| blockquote
 		| dl
 		| list
@@ -281,11 +282,19 @@ sub text_line {
 	return "$text\n";
 }
 
+sub footnote {
+	my $class = shift;
+	my $text = shift->[2];
+	warn $text;
+	return 'うぎゃあああああああああああ';
+}
+
 # Inline Nodes
 sub inline {
 	my $class = shift;
 	my $items = shift->{items};
 	my $item = $items->[0] or return;
+	$item =~ s/\(\((.*)\)\)/\\footnote{$1}/;
 	return $item;
 }
 
