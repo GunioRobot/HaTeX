@@ -16,6 +16,11 @@ my $title = $q->param('title');
 my $author = $q->param('author');
 my $body = $q->param('body');
 
+$body =~ s/\\/{\\textbackslash}/g;
+$author =~ s/\\/{\\textbackslash}/g;
+$body =~ s/\n/\\\\/g;
+$author =~ s/\n/\\\\/g;
+
 my $header =
 '\documentclass{jarticle}
 \setlength{\oddsidemargin}{-5mm}
@@ -60,7 +65,6 @@ my $name = int(rand(1000000000000000));
 chdir 'tmp';
 `make clean TARGET=$name`;
 
-$body =~ s/\\/{\\textbackslash}/g;
 my $tex =  Text::Hatex->parse($body) . "\n";
 open FILE, ">$name.tex";
 print FILE $header . $tex . $refference . $hooter;
