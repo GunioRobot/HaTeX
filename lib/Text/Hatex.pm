@@ -23,7 +23,6 @@ $Parse::RecDescent::skip = '';
 $syntax = q(
 	body       : section(s)
 	section    : h3(?) block(s?)
-
 	# Block Elements
 	block      : h5
 		| h4
@@ -149,9 +148,7 @@ sub blockquote {
 	my $ret = '';
 	if ($http) {
 		$ret = "\\begin{quotation}\n";
-		#$ret = qq|<blockquote title="$http->{title}" cite="$http->{cite}">\n|;
 	} else {
-		#$ret = "<blockquote>\n";
 		$ret = "\\begin{quotation}\n";
 	}
 	$ret .= $body;
@@ -282,7 +279,7 @@ sub p {
 	my $class = shift;
 	my $items = shift->{items};
 	my $inlines = $class->expand($items->[2]);
-	return $inlines ? "$inlines\n" : "";
+	return $inlines ? "$inlines\n" : "\n";
 }
 
 sub text_line {
@@ -296,7 +293,7 @@ sub inline {
 	my $class = shift;
 	my $items = shift->{items};
 	my $item = $items->[0] or return;
-	$item =~ s/\(\((.*)\)\)/\\footnote{$1}/;
+	$item =~ s/\(\((.*)\)\)/\\footnote{$1}/g;
 	return $item;
 }
 
