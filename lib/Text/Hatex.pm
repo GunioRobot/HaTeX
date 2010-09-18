@@ -63,6 +63,7 @@ sub parse {
 	$text =~ s/\r//g;
 	$text = "\n" . $text unless $text =~ /^\n/;
 	$text .= "\n" unless $text =~ /\n$/;
+	$text =~ s/([\#\$\%\&\_\{\}])/\\$1/g;
 	my $node = shift || 'body';
 	my $html = $class->parser->$node($text);
 	return $html;
@@ -196,7 +197,7 @@ sub list {
 		$li =~ s/^[+-]+//;
 		$list .= $li;
 	}
-	return '\begin{' . $tag . "}\n" . $list . '\end{' . $tag . "}\n";
+	return "\\begin{$tag}\n" . $list . "\\end{$tag}\n";
 }
 
 sub list_item {
@@ -294,6 +295,7 @@ sub inline {
 	my $items = shift->{items};
 	my $item = $items->[0] or return;
 	$item =~ s/\(\((.*)\)\)/\\footnote{$1}/g;
+	$item =~ s/\n/\\\\/g;
 	return $item;
 }
 
