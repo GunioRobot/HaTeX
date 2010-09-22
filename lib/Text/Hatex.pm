@@ -57,16 +57,27 @@ $syntax = q(
 	http       : /https?:\/\/[A-Za-z0-9~\/._\?\&=\-%#\+:\;,\@\']+(?::title=[^\]]+)?/
 );
 
+sub encode {
+	foreach (@_) {
+		$$text =~ s/([\#\$\%\&\_\{\}])/\\$1/g;
+	}
+}
+sub decode {
+	foreach (@_) {
+		$$text =~ s/\\([\#\$\%\&\_\{\}])/$1/g;
+	}
+}
+
 sub parse {
 	my $class = shift;
 	my $text = shift or return;
 	$text =~ s/\r//g;
 	$text = "\n" . $text unless $text =~ /^\n/;
 	$text .= "\n" unless $text =~ /\n$/;
-	$text =~ s/([\#\$\%\&\_\{\}])/\\$1/g;
+	&encode( \$text);
 	my $node = shift || 'body';
-	my $html = $class->parser->$node($text);
-	return $html;
+	my $tex = $class->parser->$node($text);
+	return $tex;
 }
 
 sub parser {

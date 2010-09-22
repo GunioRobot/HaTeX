@@ -55,14 +55,12 @@ sub make {
 	return $tex_output;
 }
 
-
-
 # sub routines
 # args: the list of reffernces
 sub sanitize {
 	foreach (@_) {
 		$$_ = '' unless $$_;
-		$$_ =~ s/\\/{\\textbackslash}/g;
+		$$_ =~ s/\\/\\{textbackslash}/g;
 	}
 }
 
