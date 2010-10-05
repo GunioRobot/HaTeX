@@ -1,24 +1,14 @@
 # args
-# arg1 title
+# arg1 subject
 # args authors info
+require 'title.pl';
+
 sub header {
-	my $title = shift;
-	my $author = shift;
-	my $flag_printdate = shift;
-	$author =~ s/\n/\\\\/g;
-
-	$title = '' unless $title;
-	$author = '' unless $author;
-	my $date = '\date{}';
-	if($flag_printdate) {
-		$date = '\date{\today}';
-	}
-
 	return '\documentclass{jarticle}
 \setlength{\oddsidemargin}{-5mm}
 \setlength{\textwidth}{17cm}
-\setlength{\topmargin}{-5mm}
-\setlength{\textheight}{254mm}
+\setlength{\topmargin}{-10mm}
+\setlength{\textheight}{250mm}
 \pagestyle{empty}
 
 \usepackage{here}
@@ -36,10 +26,7 @@ sub header {
 }
 
 \begin{document}
-\title{' . $title . '}' .
-$date .'
-\author{' . $author . '}
-\maketitle' . "\n";
+';
 }
 
 1;

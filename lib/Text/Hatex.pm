@@ -58,12 +58,19 @@ $syntax = q(
 );
 
 sub encode {
+	my $class = shift;
 	foreach (@_) {
-		$$_ =~ s/([\#\$\%\&\_\{\}])/\\$1/g;
+		next unless($$_);
+		$$_ =~ s/([\#\$\%\&\_\{\}\\])/\\$1/g;
+		$$_ =~ s/\\\\/{\\textbackslash}/g;
 	}
 }
+
 sub decode {
+	my $class = shift;
 	foreach (@_) {
+		next unless($$_);
+		$$_ =~ s/{\\textbackslash}/\\/g;
 		$$_ =~ s/\\([\#\$\%\&\_\{\}])/$1/g;
 	}
 }
@@ -225,6 +232,7 @@ sub super_pre {
 	my $items = shift->{items};
 	my $filter = $1 || ''; # todo
 	my $texts = $class->expand($items->[1]);
+	$class->decode( \$texts);
 	my $lang = 'c';
 	{
 		$items->[0] =~ /\>\|(.*)\|/;
@@ -306,7 +314,7 @@ sub inline {
 	my $items = shift->{items};
 	my $item = $items->[0] or return;
 	$item =~ s/\(\((.*)\)\)/\\footnote{$1}/g;
-	$item =~ s/\n/\\\\/g;
+	$item =~ s/\n/\\\\\n/g;
 	return $item;
 }
 

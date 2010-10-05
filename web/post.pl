@@ -40,9 +40,6 @@ sub make {
 	my $name = shift;
 	my $body = shift;
 
-	# header
-	my $header = &header($title, $author, $flag_printdate);
-
 	chdir 'tmp';
 	`make clean TARGET=$name`;
 
@@ -50,7 +47,7 @@ sub make {
 	$tex = '' unless $tex;
 
 	open FILE, ">$name.tex";
-	print FILE $header . $tex . "\n" . $refference . &hooter();
+	print FILE &header() . &title($title, $author, $flag_printdate) . $tex . "\n" . $refference . &hooter();
 	close FILE;
 
 	`nkf -e $name.tex>${name}euc.tex; rm $name.tex; mv ${name}euc.tex $name.tex`;
