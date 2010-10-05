@@ -15,6 +15,7 @@ my $title = $q->param('title');
 my $author = $q->param('author');
 my $body = $q->param('body');
 my $refference = &mkreftable( $q->param('refference'));
+my $flag_printdate = $q->param('flag_printdate');
 
 &sanitize( \$title, \$author, \$body);
 
@@ -23,6 +24,7 @@ my $tex_log = &make($name, \$body);
 
 print "<pre>" . $tex_log . "</pre>" . "
 <p>
+\$flag_printdate = '$flag_printdate'<br>
 <a href=\"tmp/$name.tex\">$name.tex</a><br>
 <a href=\"tmp/$name.pdf\">$name.pdf</a><br>
 </p>
@@ -38,6 +40,9 @@ sub make {
 	my $name = shift;
 	my $body = shift;
 
+	# header
+	my $header = &header($title, $author, $flag_printdate);
+
 	chdir 'tmp';
 	`make clean TARGET=$name`;
 
@@ -45,7 +50,7 @@ sub make {
 	$tex = '' unless $tex;
 
 	open FILE, ">$name.tex";
-	print FILE &header($title, $author) . $tex . "\n" . $refference . &hooter();
+	print FILE $header . $tex . "\n" . $refference . &hooter();
 	close FILE;
 
 	`nkf -e $name.tex>${name}euc.tex; rm $name.tex; mv ${name}euc.tex $name.tex`;
@@ -60,7 +65,8 @@ sub make {
 sub sanitize {
 	foreach (@_) {
 		$$_ = '' unless $$_;
-		$$_ =~ s/\\/\\{textbackslash}/g;
+#		$$_ =~ s/\\/\\{textbackslash}/g;
+		Text::Hatex->encode( $_);
 	}
 }
 

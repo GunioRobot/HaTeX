@@ -4,10 +4,15 @@
 sub header {
 	my $title = shift;
 	my $author = shift;
+	my $flag_printdate = shift;
 	$author =~ s/\n/\\\\/g;
 
 	$title = '' unless $title;
 	$author = '' unless $author;
+	my $date = '\date{}';
+	if($flag_printdate) {
+		$date = '\date{\today}';
+	}
 
 	return '\documentclass{jarticle}
 \setlength{\oddsidemargin}{-5mm}
@@ -31,8 +36,8 @@ sub header {
 }
 
 \begin{document}
-\title{' . $title . '}
-\date{\today}
+\title{' . $title . '}' .
+$date .'
 \author{' . $author . '}
 \maketitle' . "\n";
 }
