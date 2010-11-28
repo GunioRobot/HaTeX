@@ -2,4 +2,10 @@ TODO
 -レイアウトを細かく指定できるようにしたい
 -WEBインターフェースを格好良くする
 -日付を自由に指定できるようにする
+-5分くらいで消す
+ (Delete generated files after 5 minutes)
+-pdf作ったらリダイレクトで飛ばす
+ (show redirect to generated pdf file)
+-参考文献を、本文中で参照できるように、はてな記法を拡張する。[書名:pp4-5]みたいに
+ (extend Hatena-syntax for "References" like [Referenced Document Name:pp44-46])
 
