@@ -61,8 +61,13 @@ sub encode {
 	my $class = shift;
 	foreach (@_) {
 		next unless($$_);
-		$$_ =~ s/([\#\$\%\&\_\{\}\\])/\\$1/g;
+		$$_ =~ s/([\#\$\%\&\_\{\}\\\^\~\>\<])/\\$1/g;
 		$$_ =~ s/\\\\/{\\textbackslash}/g;
+		$$_ =~ s/\\\|/{\\docbooktolatexpipe}/g;
+		$$_ =~ s/\\\^/{\\textasciicircum}/g;
+		$$_ =~ s/\\\~/{\\textasciitilde}/g;
+		$$_ =~ s/\\\</{\\textless}/g;
+		$$_ =~ s/\\\>/{\\textgreater}/g;
 	}
 }
 
