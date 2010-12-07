@@ -71,13 +71,24 @@ sub encode {
 	}
 }
 
-sub decode {
-	my $class = shift;
-	foreach (@_) {
-		next unless($$_);
-		$$_ =~ s/{\\textbackslash}/\\/g;
-		$$_ =~ s/\\([\#\$\%\&\_\{\}])/$1/g;
-	}
+sub encode_nl {
+	my $text = shift;
+	$text =~ s/\n/\\\\\n/g;
+	return $text;
+}
+
+sub encode_inner {
+	my $text = shift;
+	$text =~ s/\\/{\\textbackslash}/g;
+	$text =~ s/\|/{\\docbooktolatexpipe}/g;
+	$text =~ s/\^/{\\textasciicircum}/g;
+	$text =~ s/\~/{\\textasciitilde}/g;
+	$text =~ s/\</{\\textless}/g;
+	$text =~ s/\>/{\\textgreater}/g;
+	$text =~ s/([\#\$\%\&\_\{\}])/\\$1/g;
+
+	$text = encode_nl $text;
+	return $text;
 }
 
 sub parse {
@@ -86,7 +97,6 @@ sub parse {
 	$text =~ s/\r//g;
 	$text = "\n" . $text unless $text =~ /^\n/;
 	$text .= "\n" unless $text =~ /\n$/;
-	&encode( \$text);
 	my $node = shift || 'body';
 	my $tex = $class->parser->$node($text);
 	return $tex;
@@ -237,7 +247,6 @@ sub super_pre {
 	my $items = shift->{items};
 	my $filter = $1 || ''; # todo
 	my $texts = $class->expand($items->[1]);
-	$class->decode( \$texts);
 	my $lang = 'c';
 	{
 		$items->[0] =~ /\>\|(.*)\|/;
@@ -310,6 +319,7 @@ sub p {
 sub text_line {
 	my $class = shift;
 	my $text = shift->{items}->[2];
+	$text = encode_nl $text;
 	return "$text\n";
 }
 
@@ -319,7 +329,7 @@ sub inline {
 	my $items = shift->{items};
 	my $item = $items->[0] or return;
 	$item =~ s/\(\((.*)\)\)/\\footnote{$1}/g;
-	$item =~ s/\n/\\\\\n/g;
+	$item = encode_inner( $item);
 	return $item;
 }
 
@@ -336,4 +346,3 @@ sub http {
 }
 
 1;
-
