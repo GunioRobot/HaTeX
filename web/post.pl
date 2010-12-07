@@ -14,9 +14,9 @@ print $q->start_html( -title => "HaTeX", -BGCOLOR => '#ffffff');
 my $title = $q->param('title');
 my $author = $q->param('author');
 my $body = $q->param('body');
-my $refference = &mkreftable( $q->param('refference'));
+my $refference = &mkreftable( $q->param('refference') eq 'on');
 my $flag_printdate = $q->param('flag_printdate');
-my $doccls_opt = $q->param('flag_titlepage') ? '[titlepage]' : '';
+my $doccls_opt = $q->param('flag_titlepage') eq 'on' ? '[titlepage]' : '';
 
 &sanitize( \$title, \$author, \$body);
 
