@@ -16,6 +16,7 @@ my $author = $q->param('author');
 my $body = $q->param('body');
 my $refference = &mkreftable( $q->param('refference'));
 my $flag_printdate = $q->param('flag_printdate');
+my $doccls_opt = $q->param('flag_titlepage') ? '[titlepage]' : '';
 
 &sanitize( \$title, \$author, \$body);
 
@@ -33,6 +34,10 @@ print "<pre>" . $tex_log . "</pre>" . "
 print $q->end_html;
 exit;
 
+#############################################################
+
+#
+# convert Hatena-syntax to tex, and create pdf
 #
 # arg1: output file name
 # arg2: refference to string of hatena-syntax
@@ -47,7 +52,11 @@ sub make {
 	$tex = '' unless $tex;
 
 	open FILE, ">$name.tex";
-	print FILE &header() . &title($title, $author, $flag_printdate) . $tex . "\n" . $refference . &hooter();
+	print FILE &header($doccls_opt);
+	print FILE &title($title, $author, $flag_printdate);
+	print FILE $tex . "\n";
+	print FILE $refference;
+	print FILE &hooter();
 	close FILE;
 
 	`nkf -e $name.tex>${name}euc.tex; rm $name.tex; mv ${name}euc.tex $name.tex`;
@@ -57,16 +66,21 @@ sub make {
 	return $tex_output;
 }
 
+#
+# Sanitizing input data
+#
 # sub routines
 # args: the list of reffernces
 sub sanitize {
 	foreach (@_) {
 		$$_ = '' unless $$_;
-#		$$_ =~ s/\\/\\{textbackslash}/g;
 		Text::Hatex->encode( $_);
 	}
 }
 
+#
+# insert reference table
+#
 sub mkreftable {
 	my $input_data = shift;
 	return '' unless $input_data;
