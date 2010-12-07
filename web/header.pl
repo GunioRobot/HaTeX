@@ -4,7 +4,7 @@
 require 'title.pl';
 
 sub header {
-	my $doccls_options = shift
+	my $doccls_options = shift;
 	return '\documentclass' . $doccls_options .'{jarticle}
 \setlength{\oddsidemargin}{-5mm}
 \setlength{\textwidth}{17cm}
