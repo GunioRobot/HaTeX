@@ -16,8 +16,8 @@ sub title {
 	}
 
 	return
-'\title{' . $subject . '}' .
-$date .'
+'\title{' . $subject . '}
+' . $date .'
 \author{' . $author . '}
 \maketitle
 ';
