@@ -260,7 +260,7 @@ sub pre {
 	my $class = shift;
 	my $items = shift->{items};
 	my $lines = $class->expand($items->[1]);
-	return '\begin{verbatiam}' . "\n$lines" . '\end{verbatiam}' . "\n";
+	return '\begin{verbatim}' . "\n$lines" . '\end{verbatim}' . "\n";
 }
 
 sub pre_line {
@@ -329,7 +329,7 @@ sub inline {
 	my $items = shift->{items};
 	my $item = $items->[0] or return;
 	$item =~ s/\(\((.*)\)\)/\\footnote{$1}/g;
-	$item = encode_inner( $item);
+#	$item = encode_inner( $item);
 	return $item;
 }
 
