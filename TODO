@@ -8,4 +8,5 @@ TODO
  (show redirect to generated pdf file)
 -参考文献を、本文中で参照できるように、はてな記法を拡張する。[書名:pp4-5]みたいに
  (extend Hatena-syntax for "References" like [Referenced Document Name:pp44-46])
+-図を入れられるようにする(enable to use figure. [f:foo.png])
 
