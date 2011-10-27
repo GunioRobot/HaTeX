@@ -12,7 +12,7 @@ ${TARGET}.dvi: ${TARGET}.tex
 
 .dvi.pdf:
 	${DVI2PDF} $<
-	
+
 .PHONY: clean
 
 clean:

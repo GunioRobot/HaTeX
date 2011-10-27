@@ -5,11 +5,11 @@
 # Version 1.0.0 alpha
 # CGIリクエスト文字列をデコードし、クエリ名をキーとしたハッシュを返します
 #
-# usage 
+# usage
 # %hash = &cgidec::getline
 #
 # Written by Keiya CHINEN <keiya_21@yahoo.co.jp>
-# 
+#
 # CGIDEC --> Yoyaku.in Custom <--
 
 
@@ -21,7 +21,7 @@ sub getline {
 	$recdata =~ tr/+/ /;
 
 	my @recdatas = split(/&/, $recdata, 10);
-	
+
 	foreach my $pair (@recdatas) {
 	    my ($qname, $qvalue) = split(/=/, $pair);
 
@@ -30,7 +30,7 @@ sub getline {
 	$qvalue =~ s/>/&lt;/g unless $qname eq 'body';
 	    $QUERY{$qname} = $qvalue;
 	}
-	
+
 	return %QUERY;
 }
 
